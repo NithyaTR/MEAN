@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from "@angular/core";
-import { Post } from "../post.model";
+import { Component } from "@angular/core";
+//import { Post } from "../post.model";
 import { NgForm } from "@angular/forms";
+import { PostService } from "../posts.service";
 
 @Component({
   selector: 'app-post-create',
@@ -10,8 +11,8 @@ import { NgForm } from "@angular/forms";
 export class PostCreateComponent {
   enteredContent = '';
   enteredTitle = '';
-  @Output() createdPost = new EventEmitter<Post>();
 
+  constructor(public postService: PostService) {}
   onAddPost (form: NgForm) {
     //console.dir(postInput); // used to view all the properties of the object postInput by collapsing
     //this.newPost = postInput.value;
@@ -20,7 +21,8 @@ export class PostCreateComponent {
     if (form.invalid) {
       return;
     }
-    const post: Post = {title: form.value.enteredTitle, content: form.value.enteredContent};
-    this.createdPost.emit(post);
+    //const post: Post = {title: form.value.enteredTitle, content: form.value.enteredContent};
+    this.postService.addPost(form.value.enteredTitle, form.value.enteredContent);
+    form.resetForm();
   }
 }

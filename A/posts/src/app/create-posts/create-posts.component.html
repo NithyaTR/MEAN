@@ -15,11 +15,11 @@
 <mat-card>
   <form (submit)="onAddPost(postForm)" #postForm="ngForm">
       <mat-form-field>
-          <input matInput type="text" name="enteredTitle" ngModel required #title="ngModel">
+          <input matInput type="text" name="enteredTitle" ngModel required #title="ngModel" placeholder="post title">
           <mat-error *ngIf="title.invalid">Please enter a title for the post</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <textarea matInput rows="6" name="enteredContent" ngModel required #content="ngModel"></textarea>
+            <textarea matInput rows="6" name="enteredContent" ngModel required #content="ngModel" placeholder="post content"></textarea>
             <mat-error *ngIf="content.invalid">Please enter content for the post</mat-error>
         </mat-form-field>
         <button mat-raised-button color='primary' type="submit">Save Post</button>
