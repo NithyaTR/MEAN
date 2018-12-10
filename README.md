@@ -16,3 +16,10 @@ In latest CLIs, use ng add @angular/material
 this adds two dependenies in package.json, angular/material and angular/cdk
 
 Subject => special kind of observable
+
+Reactive forms
+---------------
+- when you use more than one input in the form i.e, more than one form control, dont use set value directly. use 
+this.modalFG.controls['jobStatus'].setValue(0);
+instead of 
+this.modalFG.setValue({'comment': data.comment});

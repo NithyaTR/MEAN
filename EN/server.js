@@ -2,8 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 var postsRoutes = require('./routes/posts');
+var userRoutes = require('./routes/user');
+const path = require("path");
 var app = new express();
 app.use(bodyParser.json());
+app.use("/images", express.static(path.join("images")));
 
 mongoose
   .connect(
@@ -23,5 +26,6 @@ app.use((req, res, next) => {
     next();
 })
  app.use(postsRoutes);
+ app.use('/api/user', userRoutes);
 
 app.listen(3000);

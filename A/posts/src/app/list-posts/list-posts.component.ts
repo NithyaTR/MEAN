@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { Post } from "../post.model";
 import { PostService } from "../posts.service";
 import { Subscription } from "rxjs";
+import { PageEvent } from "@angular/material";
 
 @Component({
   selector: 'app-list-posts',
@@ -18,6 +19,10 @@ export class ListPostsComponent implements OnInit, OnDestroy{
   posts: Post[] = [];
   private postSub: Subscription;
   isLoading = false;
+  totalPosts = 0;
+  postsPerPage = 2;
+  currentPage = 1;
+  pageSizeOptions = [1, 2, 5, 10];
   //dependency injection.
   //adding "public" will automatically create a new proerty inside the class and assign the value to it.
   constructor(public postService: PostService) {}
@@ -32,16 +37,28 @@ export class ListPostsComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.isLoading = true;
-    this.postService.getPosts();
+    this.postService.getPosts(this.postsPerPage, this.currentPage);
     this.postSub = this.postService.getPostUpdateListener()
-      .subscribe((posts: Post[]) => {
+      .subscribe((postData: {posts: Post[], postCount: number}) => {
         this.isLoading = false;
-        this.posts = posts;
+        this.totalPosts = postData.postCount;
+        this.posts = postData.posts;
       });
   }
 
   onDelete(postId: string) {
-    this.postService.deletePost(postId);
+    this.isLoading = true;
+    this.postService.deletePost(postId)
+      .subscribe(() => {
+        this.postService.getPosts(this.postsPerPage, this.currentPage);
+      });
+  }
+
+  onChangedPage(event: PageEvent) {
+    this.isLoading = true;
+    this.currentPage = event.pageIndex + 1;
+    this.postsPerPage = event.pageSize;
+    this.postService.getPosts(this.postsPerPage, this.currentPage);
   }
 
   ngOnDestroy() {
