@@ -23,3 +23,26 @@ Reactive forms
 this.modalFG.controls['jobStatus'].setValue(0);
 instead of 
 this.modalFG.setValue({'comment': data.comment});
+
+Lazy loading
+------------
+1) router is managed globally. So there is no need to export the modules.
+2) router can be used to load components ly when we need them. this is called lazy loading. 
+for ex: 
+signup and signin is not always needed!
+This improves performance.
+
+split the routes module-wise. declare them as 'forChild' and in the main (root) route include the auth.module (since it has login and signup code) using property 'loadChildren' instead of 'component'.
+
+Deploying
+---------
+1) deploy the frontend and backend apps separately. 
+use firebase for UI?
+aws - elastic bean stalk (use as host for dynamic content) - create application.
+deploy angular using s3 (use as host for static content) 
+    - grant read only permission to an anonimous user. 
+    - enable static web site hoting.
+2) use node js app to serve both front end and backend. (CORS headers can be avoided)
+- add a separate route for angular inside backend code.
+- build code for production and place inside backend code.
+- render index.html when the defined route is hit.
